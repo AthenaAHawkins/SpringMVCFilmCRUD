@@ -9,6 +9,6 @@
    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
  <context:component-scan base-package="com.skilldistillery.film"/>
- <bean id="dao" class="com.skilldistillery.states.data.film.data.FilmDAOJdbcImpl" />
+ <bean id="dao" class="com.skilldistillery.film.data.FilmDAOJdbcImpl" />
 
 </beans>
