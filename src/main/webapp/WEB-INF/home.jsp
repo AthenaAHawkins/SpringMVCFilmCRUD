@@ -10,5 +10,11 @@
 
 <h1>Film Query full-stack</h1>
 
+<form action="showFilm.do" method ="POST">
+<input type="number" name="filmId"><br>
+<button>Get Film</button>
+
+</form>
+
 </body>
 </html>
