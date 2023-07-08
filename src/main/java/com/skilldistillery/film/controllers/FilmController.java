@@ -40,11 +40,29 @@ public class FilmController {
 		Film createFilm = filmDao.createFilm(newFilm);
 		System.out.println("*** Film: " + createFilm);
 		mv.addObject("film", createFilm);
+		mv.setViewName("WEB-INF/createFilm.jsp");
+		return mv;
 		
 
-		return mv;
 
 	}
+	@RequestMapping(path = "deleteFilm.do", params = "deleteFilm")
+	public ModelAndView deleteFilm(int filmId) {
+		ModelAndView mv = new ModelAndView();
+		System.out.println("*** DeletedFilm: " + filmId);
+		boolean deleteFilm = filmDao.deleteFilm(filmId);
+		System.out.println("*** DeletedFilm: " + deleteFilm);
+		if(deleteFilm) {
+			mv.setViewName("redirect:home.do");
+		}
+		else {
+			mv.addObject("errorMessage", "Failed to delete film.");
+		}
+		return mv;
+		
+		
+	}
+	
 	
 
 }
