@@ -41,6 +41,17 @@ public class Film {
 		
 	}
 
+	public Film(int id, String filmName, String description,
+			int released, String language, String rating) {
+		this.id = id;
+		this.title = filmName;
+		this.description = description;
+		this.releaseYear = released;
+		this.languageName = language;
+		this.rating = rating;
+		
+		
+	}
 	public int getId() {
 		return id;
 	}
