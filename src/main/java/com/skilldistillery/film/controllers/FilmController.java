@@ -22,7 +22,7 @@ public class FilmController {
 
 	@RequestMapping(path = "showFilm.do", params = "filmId")
 	public ModelAndView showFilm(int filmId) {
-		ModelAndView mv = new ModelAndView("WEB-INF/home.jsp");
+		ModelAndView mv = new ModelAndView("WEB-INF/showFilm.jsp");
 		System.out.println("***** FilmId: " + filmId);
 
 		Film film = filmDao.findFilmById(filmId);
@@ -40,7 +40,7 @@ public class FilmController {
 		Film createFilm = filmDao.createFilm(newFilm);
 		System.out.println("*** Film: " + createFilm);
 		mv.addObject("film", createFilm);
-		mv.setViewName("WEB-INF/createFilm.jsp");
+		mv.setViewName("WEB-INF/showFilm.jsp");
 		return mv;
 		
 	}
@@ -63,6 +63,20 @@ public class FilmController {
 	public String getFilmByID() {
 		
 		return "WEB-INF/getFilmByID.jsp";
+	}
+	@RequestMapping(path = "saveFilm.do")
+	public ModelAndView updateFilm(Film savedFilm) {
+		ModelAndView mv = new ModelAndView();
+		boolean film = filmDao.saveFilm(savedFilm);
+		System.out.println("**** SaveFilm" + film);
+		if(film) {
+			mv.setViewName("redirect:home.do");
+		}
+		else {
+			mv.addObject("errorMessage", "Failed to delete film.");
+		}
+		return mv;
+		
 	}
 	
 	
