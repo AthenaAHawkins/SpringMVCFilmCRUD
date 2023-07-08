@@ -43,8 +43,6 @@ public class FilmController {
 		mv.setViewName("WEB-INF/createFilm.jsp");
 		return mv;
 		
-
-
 	}
 	@RequestMapping(path = "deleteFilm.do", params = "deleteFilm")
 	public ModelAndView deleteFilm(int filmId) {
@@ -59,17 +57,16 @@ public class FilmController {
 			mv.addObject("errorMessage", "Failed to delete film.");
 		}
 		return mv;
-		
-		
+			
 	}
-	
-	
-
 	@RequestMapping(path = "getFilmByID.do") 
 	public String getFilmByID() {
 		
 		return "WEB-INF/getFilmByID.jsp";
 	}
+	
+	
+
 
 	
 // this is a comment 
