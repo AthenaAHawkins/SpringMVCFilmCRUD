@@ -6,6 +6,8 @@ public class Actor {
 	private String lastName;
 	private String firstName;
 
+	
+	
 	public Actor() {
 		super();
 	}
