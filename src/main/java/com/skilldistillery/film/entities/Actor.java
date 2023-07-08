@@ -9,7 +9,12 @@ public class Actor {
 	
 	
 	public Actor() {
-		super();
+	}
+
+	public Actor(int actorId, String actsFirstNm, String actsLastNm) {
+		this.id = actorId;
+		this.lastName = actsLastNm;
+		this.firstName = actsLastNm;
 	}
 
 	public int getId() {
