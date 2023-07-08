@@ -15,7 +15,7 @@
 
 
 <a href="getFilmByID.do">Get Film by ID</a><br/>
-<a href="createFilm.html">Create Film</a><br/>
+<a href="createFilm.do">Create Film</a><br/>
 
 
 

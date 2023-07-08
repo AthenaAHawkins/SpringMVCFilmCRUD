@@ -22,7 +22,7 @@ public class FilmController {
 
 	@RequestMapping(path = "showFilm.do", params = "filmId")
 	public ModelAndView showFilm(int filmId) {
-		ModelAndView mv = new ModelAndView("WEB-INF/home.jsp");
+		ModelAndView mv = new ModelAndView("WEB-INF/getFilmByID.jsp");
 		System.out.println("***** FilmId: " + filmId);
 
 		Film film = filmDao.findFilmById(filmId);
