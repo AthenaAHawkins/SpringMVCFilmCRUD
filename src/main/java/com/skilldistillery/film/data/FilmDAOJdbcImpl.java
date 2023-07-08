@@ -146,9 +146,33 @@ public class FilmDAOJdbcImpl implements FilmDAO{
 
 	@Override
 	public boolean deleteFilm(int filmId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+		Connection conn = null;
+		  try {
+		    conn = DriverManager.getConnection(URL, user, pass);
+		    conn.setAutoCommit(false); // START TRANSACTION
+		    String sql = "DELETE FROM film_actor WHERE film_id = ?";
+		    PreparedStatement stmt = conn.prepareStatement(sql);
+		    stmt.setInt(1, filmId);
+		    int updateCount = stmt.executeUpdate();
+		    
+		    sql = "DELETE FROM film WHERE id = ?";
+		    stmt = conn.prepareStatement(sql);
+		    stmt.setInt(1, filmId);
+		    updateCount = stmt.executeUpdate();
+		    conn.commit();             // COMMIT TRANSACTION
+		  }
+		  catch (SQLException sqle) {
+		    sqle.printStackTrace();
+		    if (conn != null) {
+		      try { conn.rollback(); }
+		      catch (SQLException sqle2) {
+		        System.err.println("Error trying to rollback");
+		      }
+		    }
+		    return false;
+		  }
+		  return true;
+		}
 
 	@Override
 	public Film updateFilm(Film updatedFilm) {
