@@ -91,8 +91,42 @@ public class FilmDAOJdbcImpl implements FilmDAO{
 
 	@Override
 	public List<Film> findByKeyWord(String keyWord) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Film> films = new ArrayList<>();
+
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+
+			String sql = "SELECT film.* , language.name FROM film Join language ON film.language_id = language.id "
+					+ "WHERE film.title LIKE ? OR film.description LIKE ?";
+			PreparedStatement prepstmt = conn.prepareStatement(sql);
+			prepstmt.setString(1, "%" + keyWord + "%");
+			prepstmt.setString(2, "%" + keyWord + "%");
+			ResultSet filmresult = prepstmt.executeQuery();
+
+			while (filmresult.next()) {
+
+				int id = filmresult.getInt("id");
+				String filmName = filmresult.getString("title");
+				String description = filmresult.getString("description");
+				int released = filmresult.getInt("release_year");
+				String language = filmresult.getString("name");
+				String rating = filmresult.getString("rating");
+				Film film = new Film(id,filmName, description,released,language,rating);
+				film.setActors(findActorsByFilmId(id));
+				
+				films.add(film);
+				
+			}
+			System.out.println(films);
+			filmresult.close();
+			prepstmt.close();
+			conn.close();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return films;
 	}
 
 	@Override
@@ -174,72 +208,67 @@ public class FilmDAOJdbcImpl implements FilmDAO{
 		  return true;
 		}
 
-	
-	public  boolean saveFilm(Film film) {
-			  Connection conn = null;
-			  try {
-			    conn = DriverManager.getConnection(URL, user, pass);
-			    conn.setAutoCommit(false); // START TRANSACTION
-			    String sql = "UPDATE film SET title=?, description=?, release_year=?, language_id=?, rental_duration=?,"
-			    		+ "rental_rate=?, length=?, replacement_cost=?, rating=?, special_features WHERE id=?";
-			    		
-			    PreparedStatement stmt = conn.prepareStatement(sql);
-			    stmt.setString(1, film.getTitle());
-			    stmt.setString(2, film.getDescription());
-			    stmt.setInt(3, film.getReleaseYear());
-			    stmt.setInt(4, film.getLanguageId());
-			    stmt.setInt(5, film.getRentalDuration());
-			    stmt.setDouble(6, film.getRentalRate());
-			    stmt.setInt(7, film.getLength());
-			    stmt.setDouble(8, film.getReplacementCost());
-			    stmt.setString(9, film.getRating());
-			    stmt.setString(10, film.getFeatures());
-			    int updateCount = stmt.executeUpdate();
-			    if (updateCount == 1) {
-			      // Replace actor's film list
-			      sql = "DELETE FROM film_actor WHERE actor_id = ?";
-			      stmt = conn.prepareStatement(sql);
-			      stmt.setInt(1, film.getId());
-			      updateCount = stmt.executeUpdate();
-			      sql = "INSERT INTO film_actor (film_id, actor_id) VALUES (?,?)";
-			      stmt = conn.prepareStatement(sql);
-			      for (Actor films : film.getActors()) {
-			        stmt.setInt(1, film.getId());
-			        stmt.setInt(2, film.getId());
-			        updateCount = stmt.executeUpdate();
-			      }
-			      conn.commit();           // COMMIT TRANSACTION
-			    }
-			  } catch (SQLException sqle) {
-			    sqle.printStackTrace();
-			    if (conn != null) {
-			      try { conn.rollback(); } // ROLLBACK TRANSACTION ON ERROR
-			      catch (SQLException sqle2) {
-			        System.err.println("Error trying to rollback");
-			      }
-			    }
-			    return false;
-			  }
-			  return true;
-			
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	}
-
 
 	@Override
-	public Film updateFilm(Film updatedFilm) {
+	public boolean saveFilm(Film updatedFilm) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
+
+	
+//	public boolean saveFilm(Film film) {
+//			  Connection conn = null;
+//			  try {
+//			    conn = DriverManager.getConnection(URL, user, pass);
+//			    conn.setAutoCommit(false); // START TRANSACTION
+//			    String sql = "UPDATE film SET title=?, description=?, release_year=?, language_id=?, rental_duration=?,"
+//			    		+ "rental_rate=?, length=?, replacement_cost=?, rating=?, special_features WHERE id=?";
+//			    		
+//			    PreparedStatement stmt = conn.prepareStatement(sql);
+//			    stmt.setString(1, film.getTitle());
+//			    stmt.setString(2, film.getDescription());
+//			    stmt.setInt(3, film.getReleaseYear());
+//			    stmt.setInt(4, film.getLanguageId());
+//			    stmt.setInt(5, film.getRentalDuration());
+//			    stmt.setDouble(6, film.getRentalRate());
+//			    stmt.setInt(7, film.getLength());
+//			    stmt.setDouble(8, film.getReplacementCost());
+//			    stmt.setString(9, film.getRating());
+//			    stmt.setString(10, film.getFeatures());
+//			    int updateCount = stmt.executeUpdate();
+//			    if (updateCount == 1) {
+//			      // Replace actor's film list
+//			      sql = "DELETE FROM film WHERE id = ?";
+//			      stmt = conn.prepareStatement(sql);
+//			      stmt.setInt(1, film.getId());
+//			      updateCount = stmt.executeUpdate();
+//			      sql = "INSERT INTO film (film_id, actor_id) VALUES (?,?)";
+//			      stmt = conn.prepareStatement(sql);
+//			      for (Film films : film.get) {
+//			        stmt.setInt(1, film.getId());
+//			        stmt.setInt(2, film.getId());
+//			        updateCount = stmt.executeUpdate();
+//			      }
+//			      conn.commit();           // COMMIT TRANSACTION
+//			    }
+//			  } catch (SQLException sqle) {
+//			    sqle.printStackTrace();
+//			    if (conn != null) {
+//			      try { conn.rollback(); } // ROLLBACK TRANSACTION ON ERROR
+//			      catch (SQLException sqle2) {
+//			        System.err.println("Error trying to rollback");
+//			      }
+//			    }
+//			    return false;
+//			  }
+//			  return true;
+//			
+//
+//
+//		
+//	}
+
+
 
 
 }

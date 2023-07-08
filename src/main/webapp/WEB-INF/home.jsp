@@ -15,9 +15,10 @@
 
 <form action="showFilm.do" method ="POST">
 <input type="number" name="filmId"><br>
-<button>Get Film</button>
-
+<button>Get Film by ID</button>
 </form>
+
+
 
 <c:choose>
 <c:when test="${not empty film }">

@@ -14,7 +14,9 @@ public class Actor {
 		
 	}
 	public Actor(int id, String lastName, String firstName) {
-		
+		this.id = id;
+		this.lastName = lastName;
+		this.firstName = firstName;
 	}
 
 	public int getId() {
