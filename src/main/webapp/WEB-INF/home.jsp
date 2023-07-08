@@ -22,6 +22,10 @@
 <c:choose>
 <c:when test="${not empty film }">
 	<h2> ${film.title }</h2>
+	<h2> ${film.releaseYear}</h2>
+	<h2> ${film.rating}</h2>
+	<h2> ${film.description}</h2>
+	
 	</c:when>
 	<c:otherwise>
 	</c:otherwise>

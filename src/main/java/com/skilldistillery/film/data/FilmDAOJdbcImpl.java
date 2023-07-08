@@ -54,7 +54,7 @@ public class FilmDAOJdbcImpl implements FilmDAO{
 		conn.close();
 		
 	} catch (SQLException e) {
-		// TODO Auto-generated catch block
+		
 		e.printStackTrace();
 	}
 		return film;
@@ -90,10 +90,70 @@ public class FilmDAOJdbcImpl implements FilmDAO{
 	}
 
 	@Override
-	public List<Film> findByKeyWord(String keyWord) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Film> findByKeyword(String keyword) {
+		List<Film> films = new ArrayList<>();
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			String sql = "SELECT film.* FROM film " + " WHERE film.title LIKE ? OR film.description LIKE ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, "%" + keyword + "%");
+			stmt.setString(2, "%" + keyword + "%");
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				int filmId = rs.getInt("id");
+				String title = rs.getString("title");
+				String desc = rs.getString("description");
+				int releaseYear = rs.getShort("release_year");
+				int langId = rs.getInt("language_id");
+				int rentDur = rs.getInt("rental_duration");
+				double rate = rs.getDouble("rental_rate");
+				int length = rs.getInt("length");
+				double repCost = rs.getDouble("replacement_cost");
+				String rating = rs.getString("rating");
+				String features = rs.getString("special_features");
+				String languageName = findLanguageNameById(langId);
+				List<Actor> findActorsById = findActorsByFilmId(filmId);
+
+				Film film = new Film(filmId, title, desc, releaseYear, rentDur, rate, length, repCost, rating, features,
+						languageName);
+				film.setActors(findActorsById);
+				films.add(film);
+
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return films;
+
 	}
+	@Override
+	public String findLanguageNameById(int languageId) {
+		String languageName = "";
+		String sql = " SELECT language.* FROM language WHERE language.id = ?";
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, languageId);
+			ResultSet filmResult = pstmt.executeQuery();
+			while (filmResult.next()) {
+				languageName = filmResult.getString("name");
+
+			}
+			filmResult.close();
+			pstmt.close();
+			conn.close();
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		}
+		return languageName;
+	}
+
 
 	@Override
 	public Film createFilm(Film newFilm) {
@@ -130,7 +190,7 @@ public class FilmDAOJdbcImpl implements FilmDAO{
 		    } else {
 		      newFilm = null;
 		    }
-		    conn.commit(); // COMMIT TRANSACTION
+		    conn.commit();
 		  } catch (SQLException sqle) {
 		    sqle.printStackTrace();
 		    if (conn != null) {
@@ -149,7 +209,7 @@ public class FilmDAOJdbcImpl implements FilmDAO{
 		Connection conn = null;
 		  try {
 		    conn = DriverManager.getConnection(URL, user, pass);
-		    conn.setAutoCommit(false); // START TRANSACTION
+		    conn.setAutoCommit(false); 
 		    String sql = "DELETE FROM film_actor WHERE film_id = ?";
 		    PreparedStatement stmt = conn.prepareStatement(sql);
 		    stmt.setInt(1, filmId);
@@ -159,7 +219,7 @@ public class FilmDAOJdbcImpl implements FilmDAO{
 		    stmt = conn.prepareStatement(sql);
 		    stmt.setInt(1, filmId);
 		    updateCount = stmt.executeUpdate();
-		    conn.commit();             // COMMIT TRANSACTION
+		    conn.commit();            
 		  }
 		  catch (SQLException sqle) {
 		    sqle.printStackTrace();
@@ -196,7 +256,7 @@ public class FilmDAOJdbcImpl implements FilmDAO{
 			    stmt.setString(10, film.getFeatures());
 			    int updateCount = stmt.executeUpdate();
 			    if (updateCount == 1) {
-			      // Replace actor's film list
+			      
 			      sql = "DELETE FROM film_actor WHERE actor_id = ?";
 			      stmt = conn.prepareStatement(sql);
 			      stmt.setInt(1, film.getId());
@@ -208,12 +268,12 @@ public class FilmDAOJdbcImpl implements FilmDAO{
 			        stmt.setInt(2, film.getId());
 			        updateCount = stmt.executeUpdate();
 			      }
-			      conn.commit();           // COMMIT TRANSACTION
+			      conn.commit();          
 			    }
 			  } catch (SQLException sqle) {
 			    sqle.printStackTrace();
 			    if (conn != null) {
-			      try { conn.rollback(); } // ROLLBACK TRANSACTION ON ERROR
+			      try { conn.rollback(); } 
 			      catch (SQLException sqle2) {
 			        System.err.println("Error trying to rollback");
 			      }
@@ -233,13 +293,49 @@ public class FilmDAOJdbcImpl implements FilmDAO{
 		
 		
 	}
-
-
 	@Override
-	public Film updateFilm(Film updatedFilm) {
-		// TODO Auto-generated method stub
-		return null;
+	public Film updateFilm(Film film) {
+	    Connection conn = null;
+	    try {
+	        conn = DriverManager.getConnection(URL, user, pass);
+	        conn.setAutoCommit(false);
+
+	        String updateSql = "UPDATE film SET title=?, description=?, release_year=?, rating=?, rental_duration=?, " +
+	                "rental_rate=?, length=?, replacement_cost=?, special_features=? WHERE id=?";
+	        PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+	        updateStmt.setString(1, film.getTitle());
+	        updateStmt.setString(2, film.getDescription());
+	        updateStmt.setInt(3, film.getReleaseYear());
+	        updateStmt.setString(4, film.getRating());
+	        updateStmt.setInt(5, film.getRentalDuration());
+	        updateStmt.setDouble(6, film.getRentalRate());
+	        updateStmt.setInt(7, film.getLength());
+	        updateStmt.setDouble(8, film.getReplacementCost());
+	        updateStmt.setString(9, film.getFeatures());
+	        updateStmt.setInt(10, film.getId());
+	        int updateCount = updateStmt.executeUpdate();
+
+	        conn.commit();
+
+	        if (updateCount > 0) {
+	            return film;
+	        } else {
+	            return null;
+	        }
+	    } catch (SQLException sqle) {
+	        sqle.printStackTrace();
+	        if (conn != null) {
+	            try {
+	                conn.rollback();
+	            } catch (SQLException sqle2) {
+	                System.err.println("Error trying to rollback");
+	            }
+	        }
+	        return film;
+	    } 
 	}
+
+	
 
 
 }
