@@ -18,6 +18,14 @@
 <button>Get Film by ID</button>
 </form>
 
+<form action="createFilm.do" method ="POST">
+<input type="text" name="createFilm">
+<br>
+<button>Create a new Film</button>
+</form>
+
+
+
 
 
 <c:choose>
