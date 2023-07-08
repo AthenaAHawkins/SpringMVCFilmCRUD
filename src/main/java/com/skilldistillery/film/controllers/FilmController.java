@@ -68,6 +68,7 @@ public class FilmController {
 	
 	@RequestMapping(path = "getFilmByID.do") 
 	public String getFilmByID() {
+		
 		return "WEB-INF/getFilmByID.jsp";
 	}
 	
