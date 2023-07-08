@@ -174,6 +174,67 @@ public class FilmDAOJdbcImpl implements FilmDAO{
 		  return true;
 		}
 
+	
+	public  boolean saveFilm(Film film) {
+			  Connection conn = null;
+			  try {
+			    conn = DriverManager.getConnection(URL, user, pass);
+			    conn.setAutoCommit(false); // START TRANSACTION
+			    String sql = "UPDATE film SET title=?, description=?, release_year=?, language_id=?, rental_duration=?,"
+			    		+ "rental_rate=?, length=?, replacement_cost=?, rating=?, special_features WHERE id=?";
+			    		
+			    PreparedStatement stmt = conn.prepareStatement(sql);
+			    stmt.setString(1, film.getTitle());
+			    stmt.setString(2, film.getDescription());
+			    stmt.setInt(3, film.getReleaseYear());
+			    stmt.setInt(4, film.getLanguageId());
+			    stmt.setInt(5, film.getRentalDuration());
+			    stmt.setDouble(6, film.getRentalRate());
+			    stmt.setInt(7, film.getLength());
+			    stmt.setDouble(8, film.getReplacementCost());
+			    stmt.setString(9, film.getRating());
+			    stmt.setString(10, film.getFeatures());
+			    int updateCount = stmt.executeUpdate();
+			    if (updateCount == 1) {
+			      // Replace actor's film list
+			      sql = "DELETE FROM film_actor WHERE actor_id = ?";
+			      stmt = conn.prepareStatement(sql);
+			      stmt.setInt(1, film.getId());
+			      updateCount = stmt.executeUpdate();
+			      sql = "INSERT INTO film_actor (film_id, actor_id) VALUES (?,?)";
+			      stmt = conn.prepareStatement(sql);
+			      for (Actor films : film.getActors()) {
+			        stmt.setInt(1, film.getId());
+			        stmt.setInt(2, film.getId());
+			        updateCount = stmt.executeUpdate();
+			      }
+			      conn.commit();           // COMMIT TRANSACTION
+			    }
+			  } catch (SQLException sqle) {
+			    sqle.printStackTrace();
+			    if (conn != null) {
+			      try { conn.rollback(); } // ROLLBACK TRANSACTION ON ERROR
+			      catch (SQLException sqle2) {
+			        System.err.println("Error trying to rollback");
+			      }
+			    }
+			    return false;
+			  }
+			  return true;
+			
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+
+
 	@Override
 	public Film updateFilm(Film updatedFilm) {
 		// TODO Auto-generated method stub
