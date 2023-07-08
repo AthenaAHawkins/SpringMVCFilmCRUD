@@ -1,5 +1,7 @@
 package com.skilldistillery.film.entities;
 
+import java.util.Objects;
+
 public class Actor {
 
 	private int id;
@@ -9,12 +11,10 @@ public class Actor {
 	
 	
 	public Actor() {
+		
 	}
-
-	public Actor(int actorId, String actsFirstNm, String actsLastNm) {
-		this.id = actorId;
-		this.lastName = actsLastNm;
-		this.firstName = actsLastNm;
+	public Actor(int id, String lastName, String firstName) {
+		
 	}
 
 	public int getId() {
@@ -45,5 +45,23 @@ public class Actor {
 	public String toString() {
 		return "Actor [id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(firstName, id, lastName);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Actor other = (Actor) obj;
+		return Objects.equals(firstName, other.firstName) && id == other.id && Objects.equals(lastName, other.lastName);
+	}
+	
 
 }
