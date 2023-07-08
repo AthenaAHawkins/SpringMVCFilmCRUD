@@ -16,7 +16,8 @@ public class FilmController {
 
 	@RequestMapping(path = { "/", "home.do" })
 	public ModelAndView goHome() {
-		ModelAndView mv = new ModelAndView("WEB-INF/home.jsp");
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("WEB-INF/home.jsp");
 		return mv;
 	}
 
@@ -36,6 +37,7 @@ public class FilmController {
 	@RequestMapping(path = "createFilm.do", params = "newFilm")
 	public ModelAndView createFilm(Film newFilm) {
 		ModelAndView mv = new ModelAndView();
+		mv.setViewName("WEB-INF/createFilm.jsp");
 		System.out.println("*** New Film: " + newFilm);
 		Film createFilm = filmDao.createFilm(newFilm);
 		System.out.println("*** Film: " + createFilm);
@@ -44,6 +46,11 @@ public class FilmController {
 
 		return mv;
 
+	}
+	
+	@RequestMapping(path = "getFilmByID.do") 
+	public String getFilmByID() {
+		return "WEB-INF/getFilmByID.jsp";
 	}
 	
 
