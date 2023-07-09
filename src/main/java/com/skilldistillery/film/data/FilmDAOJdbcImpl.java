@@ -224,7 +224,7 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 			conn = DriverManager.getConnection(URL, user, pass);
 			conn.setAutoCommit(false); // START TRANSACTION
 			String sql = "UPDATE film SET title=?, description=?, release_year=?, language_id=?, rental_duration=?,"
-					+ "rental_rate=?, length=?, replacement_cost=?, rating=?, special_features WHERE id=?";
+					+ "rental_rate=?, length=?, replacement_cost=?, rating=?, special_features=? WHERE id=?";
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, film.getTitle());

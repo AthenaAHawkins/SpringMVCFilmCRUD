@@ -13,10 +13,12 @@
 <h1>Create Film</h1>
 
 <form action="createFilm.do" method ="POST">
-Title: <input type="text" name="Title">
-Description: <input type="text" name="Description">
-Language ID: <input type="text" name="languageID">
+Title: <input type="text" name="title" value ="${film.title }">
+Description: <input type="text" name="description" value="${film.description }">
 
+
+
+ <button type="submit">Submit Film</button><br>
 </form>
 
 
