@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.skilldistillery.film.data.FilmDAO;
@@ -22,7 +23,7 @@ public class FilmController {
 		return mv;
 	}
 
-	@RequestMapping(path = "showFilm.do", params = "filmId")
+	@RequestMapping(path = "showFilm.do")
 	public ModelAndView showFilm(int filmId) {
 		ModelAndView mv = new ModelAndView("WEB-INF/getFilmByID.jsp");
 
@@ -42,7 +43,7 @@ public class FilmController {
 		Film createFilm = filmDao.createFilm(newFilm);
 		System.out.println("*** Film: " + createFilm);
 		mv.addObject("film", createFilm);
-		mv.setViewName("WEB-INF/showFilm.jsp");
+		
 		return mv;
 		
 	}
@@ -62,7 +63,7 @@ public class FilmController {
 			
 	}
 	@RequestMapping(path = "getCreateFilm.do")
-	public String getCreateFilmByID() {
+	public String getCreateFilm() {
 		
 		return "WEB-INF/getCreateFilm.jsp";
 	}

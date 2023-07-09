@@ -189,20 +189,12 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 				newFilm = null;
 			}
 			conn.commit();
-		} catch (SQLException sqle) {
-			sqle.printStackTrace();
-			if (conn != null) {
-				try {
-					conn.rollback();
-				} catch (SQLException sqle2) {
-					System.err.println("Error trying to rollback");
-				}
-			}
-			throw new RuntimeException("Error inserting actor " + newFilm);
-		}
+		} catch (SQLException sql) {
+			sql.printStackTrace();
+			
+	}
 		return newFilm;
 	}
-
 	@Override
 	public boolean deleteFilm(int filmId) {
 		Connection conn = null;
