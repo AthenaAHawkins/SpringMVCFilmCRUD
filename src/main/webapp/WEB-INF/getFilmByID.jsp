@@ -30,7 +30,10 @@
 	<p> No Film found under that ID </p>
 	</c:otherwise>
 	</c:choose>
-
+	
+<form action = "deleteFilm.do" method = "POST">
+<input type = "button" name ="deleteButton">
+</form>
 
 </body>
 </html>
