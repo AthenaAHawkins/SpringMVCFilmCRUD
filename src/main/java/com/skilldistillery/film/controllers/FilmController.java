@@ -5,10 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.servlet.ModelAndView;
 
 import com.skilldistillery.film.data.FilmDAO;
+
 import com.skilldistillery.film.entities.Film;
 
 @Controller
@@ -47,11 +50,13 @@ public class FilmController {
 		return mv;
 		
 	}
-	@RequestMapping(path = "deleteFilm.do", params = "deleteFilm")
-	public ModelAndView deleteFilm(int filmId) {
+	@RequestMapping(path = "deleteFilm.do")
+	public ModelAndView deleteFilm(@RequestParam("filmId") int filmId) {
 		ModelAndView mv = new ModelAndView();
 		System.out.println("*** DeletedFilm: " + filmId);
 		boolean deleteFilm = filmDao.deleteFilm(filmId);
+		
+
 		System.out.println("*** DeletedFilm: " + deleteFilm);
 		if(deleteFilm) {
 			mv.setViewName("redirect:home.do");
@@ -77,7 +82,7 @@ public class FilmController {
 	
 	
 	@RequestMapping(path = "saveFilm.do")
-	public ModelAndView updateFilm(Film savedFilm) {
+	public ModelAndView updateFilm(Film savedFilm) { 
 		ModelAndView mv = new ModelAndView();
 		boolean film = filmDao.saveFilm(savedFilm);
 		System.out.println("**** SaveFilm" + film);
