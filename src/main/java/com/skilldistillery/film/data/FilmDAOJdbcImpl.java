@@ -175,15 +175,6 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 				if (keys.next()) {
 					int newFilmID = keys.getInt(1);
 					newFilm.setId(newFilmID);
-					if (newFilm.getActors() != null && newFilm.getActors().size() > 0) {
-						sql = "INSERT INTO film_actor (film_id, actor_id) VALUES (?,?)";
-						stmt = conn.prepareStatement(sql);
-						for (Actor actor : newFilm.getActors()) {
-							stmt.setInt(1, newFilmID);
-							stmt.setInt(2, actor.getId());
-							updateCount = stmt.executeUpdate();
-						}
-					}
 				}
 			} else {
 				newFilm = null;
@@ -198,7 +189,6 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 					System.err.println("Error trying to rollback");
 				}
 			}
-			throw new RuntimeException("Error inserting actor " + newFilm);
 		}
 		return newFilm;
 	}
@@ -249,9 +239,9 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 			stmt.setString(10, film.getFeatures());
 			int updateCount = stmt.executeUpdate();
 			if (updateCount == 1) {
+				
 				conn.commit();
-
-				}
+			}
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 			if (conn != null) {
