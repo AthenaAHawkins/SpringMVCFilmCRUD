@@ -84,20 +84,19 @@ public class FilmController {
 	
 	@RequestMapping(path = "updateFilmInfo.do")
 	public String updateFilmInfo() {
-		return "WEB-INF/saveFilm.jsp";
+		return "WEB-INF/getFilmByID.jsp";
 	}
 	
 
 	@RequestMapping(path = "saveFilm.do")
-	public ModelAndView updateFilm(@RequestParam("filmInfo")Film savedFilm) {
+	public ModelAndView updateFilm(@RequestParam("mvTitle") String title,String description, int langID,@RequestParam("ID") int ID) {
+		Film film = new Film(title, description,langID, ID);
+		boolean updated = filmDao.saveFilm(film);
 		ModelAndView mv = new ModelAndView();
-		boolean film = filmDao.saveFilm(savedFilm);
-		System.out.println("**** SaveFilm" + film);
-		if (film) {
-			mv.setViewName("redirect:home.do");
-		} else {
-			mv.addObject("errorMessage", "Failed to delete film.");
-		}
+		//System.out.println("**** SaveFilm" + film);
+		
+		mv.setViewName("WEB-INF/getFilmByID.jsp");
+		mv.addObject("film",updated);
 		return mv;
 
 	}
@@ -112,5 +111,4 @@ public class FilmController {
 		return mv;
 	}
 
-// this is a comment 
 }

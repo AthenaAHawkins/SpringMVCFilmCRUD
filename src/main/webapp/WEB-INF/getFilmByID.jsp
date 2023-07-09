@@ -65,20 +65,16 @@
     <button type="submit">Delete Film</button><br>
 </form>
 
-<a href="updateFilmInfo.do">Update Film Info</a><br/>
+<form action="saveFilm.do" method ="POST">
+ <input type="hidden" name="ID" value="${film.id}" />
+Title:<input type = "text" name="mvTitle" value = "${film.title }"><br>
+Description:<input type = "text" name="mvDesc" value = "${film.description }"><br>
+LanguageId:<input type = "text" name="langID" value = "${film.languageId }"><br>
+<button type="submit">Submit Changes</button><br>
+</form>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
 
 
 

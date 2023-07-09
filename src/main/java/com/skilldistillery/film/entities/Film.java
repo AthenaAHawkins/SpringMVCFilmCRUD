@@ -29,6 +29,13 @@ public class Film {
 		this.description = description;
 	}
 	
+	public Film(String title, String description, int langID, int Id) {
+		this.title = title;
+		this.description = description;
+		this.languageId = langID;
+		this.id=Id;
+	}
+	
 	public Film(int id, String title, String desc, int releaseYear, int rentDur, double rate, int length,
 			double repCost, String rating, String features, String languageName) {
 		super();
