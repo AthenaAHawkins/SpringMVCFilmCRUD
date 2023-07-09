@@ -53,7 +53,6 @@ public class FilmController {
 		System.out.println("*** DeletedFilm: " + filmId);
 		boolean deleteFilm = filmDao.deleteFilm(filmId);
 		
-
 		System.out.println("*** DeletedFilm: " + deleteFilm);
 		if(deleteFilm) {
 			mv.setViewName("redirect:home.do");
