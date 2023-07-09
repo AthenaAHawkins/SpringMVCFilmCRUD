@@ -20,6 +20,7 @@
 
 <c:choose>
 <c:when test="${not empty film }">
+	<h2> ${film.id }</h2>
 	<h2> ${film.title }</h2>
 	<h2> ${film.releaseYear}</h2>
 	<h2> ${film.rating}</h2>
@@ -31,8 +32,10 @@
 	</c:otherwise>
 	</c:choose>
 	
-<form action = "deleteFilm.do" method = "POST">
-<input type = "button" name ="deleteButton">
+<form action = "deleteFilm.do" method = "POST" id="formDel">
+<p>Do you want to delete this film?</p>
+ <input type="hidden" name="filmId" value= "${film.id }" />
+ <button type="submit">Delete Film</button>
 </form>
 
 </body>
