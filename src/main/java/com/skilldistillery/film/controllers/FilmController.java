@@ -39,70 +39,67 @@ public class FilmController {
 
 	}
 
-	@RequestMapping(path = "createFilm.do", params = "newFilm")
-	public ModelAndView createFilm(Film newFilm) {
+	@RequestMapping(path = "createFilm.do")
+	public ModelAndView createFilm(@RequestParam ("newFilm")Film newFilm) {
 		ModelAndView mv = new ModelAndView("WEB-INF/getCreateFilm.jsp");
 		System.out.println("*** New Film: " + newFilm);
 		Film createFilm = filmDao.createFilm(newFilm);
 		System.out.println("*** Film: " + createFilm);
 		mv.addObject("film", createFilm);
 		
-		return mv;
 		
+		return mv;
 	}
+
 	@RequestMapping(path = "deleteFilm.do")
 	public ModelAndView deleteFilm(@RequestParam("filmId") int filmId) {
 		ModelAndView mv = new ModelAndView();
 		System.out.println("*** DeletedFilm: " + filmId);
 		boolean deleteFilm = filmDao.deleteFilm(filmId);
-		
 
 		System.out.println("*** DeletedFilm: " + deleteFilm);
-		if(deleteFilm) {
+		if (deleteFilm) {
 			mv.setViewName("redirect:home.do");
-		}
-		else {
+		} else {
 			mv.addObject("errorMessage", "Failed to delete film.");
 		}
 		return mv;
-			
+
 	}
+
 	@RequestMapping(path = "getCreateFilm.do")
 	public String getCreateFilm() {
-		
+
 		return "WEB-INF/getCreateFilm.jsp";
 	}
-			
-	
-	@RequestMapping(path = "getFilmByID.do") 
+
+	@RequestMapping(path = "getFilmByID.do")
 	public String getFilmByID() {
-		
+
 		return "WEB-INF/getFilmByID.jsp";
 	}
-	
-	
+
 	@RequestMapping(path = "saveFilm.do")
-	public ModelAndView updateFilm(Film savedFilm) { 
+	public ModelAndView updateFilm(Film savedFilm) {
 		ModelAndView mv = new ModelAndView();
 		boolean film = filmDao.saveFilm(savedFilm);
 		System.out.println("**** SaveFilm" + film);
-		if(film) {
+		if (film) {
 			mv.setViewName("redirect:home.do");
-		}
-		else {
+		} else {
 			mv.addObject("errorMessage", "Failed to delete film.");
 		}
 		return mv;
-		
+
 	}
+
 	@RequestMapping(path = "searchFilms.do", params = "keyword")
 	public ModelAndView searchFilms(String keyword) {
 		ModelAndView mv = new ModelAndView("WEB-INF/searchResults.jsp");
-		List<Film>films = filmDao.findByKeyword(keyword);
+		List<Film> films = filmDao.findByKeyword(keyword);
 		mv.addObject("films", films);
 		return mv;
 	}
-	
-	
+
 // this is a comment 
 }

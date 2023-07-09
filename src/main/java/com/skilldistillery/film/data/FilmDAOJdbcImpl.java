@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import com.skilldistillery.film.entities.Actor;
 import com.skilldistillery.film.entities.Film;
 
@@ -166,8 +167,9 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, newFilm.getTitle());
 			stmt.setString(2, newFilm.getDescription());
-			stmt.setInt(3, 1);
+			stmt.setInt(3, newFilm.getLanguageId());
 			int updateCount = stmt.executeUpdate();
+			conn.commit();
 
 			if (updateCount == 1) {
 				ResultSet keys = stmt.getGeneratedKeys();
@@ -175,20 +177,11 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 				if (keys.next()) {
 					int newFilmID = keys.getInt(1);
 					newFilm.setId(newFilmID);
-					if (newFilm.getActors() != null && newFilm.getActors().size() > 0) {
-						sql = "INSERT INTO film_actor (film_id, actor_id) VALUES (?,?)";
-						stmt = conn.prepareStatement(sql);
-						for (Actor actor : newFilm.getActors()) {
-							stmt.setInt(1, newFilmID);
-							stmt.setInt(2, actor.getId());
-							updateCount = stmt.executeUpdate();
-						}
-					}
 				}
 			} else {
 				newFilm = null;
 			}
-			conn.commit();
+
 		} catch (SQLException sql) {
 			sql.printStackTrace();
 			
@@ -241,18 +234,7 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 			stmt.setString(10, film.getFeatures());
 			int updateCount = stmt.executeUpdate();
 			if (updateCount == 1) {
-
-				sql = "DELETE FROM film_actor WHERE actor_id = ?";
-				stmt = conn.prepareStatement(sql);
-				stmt.setInt(1, film.getId());
-				updateCount = stmt.executeUpdate();
-				sql = "INSERT INTO film_actor (film_id, actor_id) VALUES (?,?)";
-				stmt = conn.prepareStatement(sql);
-				for (Actor films : film.getActors()) {
-					stmt.setInt(1, film.getId());
-					stmt.setInt(2, film.getId());
-					updateCount = stmt.executeUpdate();
-				}
+				
 				conn.commit();
 			}
 		} catch (SQLException sqle) {
