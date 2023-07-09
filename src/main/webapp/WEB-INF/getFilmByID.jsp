@@ -6,32 +6,41 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Get Film By ID</title>
+<title>Film Info</title>
 </head>
 <body>
 
-<h1>Find film by ID</h1>
+<h3>Find film by ID</h3>
 
 <form action="showFilm.do" method ="POST">
 <input type="number" name="filmId"><br>
 <button>Get Film by ID</button>
 </form>
 
+<h3>Find Film by KeyWord</h3>
+
+<form action="searchFilms.do" method ="POST">
+<input type="text" name="keyword"><br>
+<button>Get Film by Keyword</button>
+</form>
 
 <c:choose>
 <c:when test="${not empty film }">
-	<h2> ${film.id }</h2>
-	<h2> ${film.title }</h2>
-	<h2> ${film.releaseYear}</h2>
-	<h2> ${film.rating}</h2>
-	<h2> ${film.description}</h2>
-	<h2> ${film.actors } </h2>
+	<p>Film ID: ${film.id }</p>
+	<p>Film Title:  ${film.title }</p>
+	<p>Film Release Year:  ${film.releaseYear}</p>
+	<p>Film Rating: ${film.rating}</h2>
+	<p>Film Description:  ${film.description}</p>
+	<p> Actors involved: ${film.actors } </p>
 	
 	</c:when>
 	<c:otherwise>
 	<p> No Film found under that ID </p>
 	</c:otherwise>
 	</c:choose>
+
+
+
 	
 <form action = "deleteFilm.do" method = "POST" id="formDel">
 <p>Do you want to delete this film?</p>

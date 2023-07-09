@@ -96,8 +96,8 @@ public class FilmController {
 		
 	}
 	@RequestMapping(path = "searchFilms.do", params = "keyword")
-	public ModelAndView searchFilms(String keyword) {
-		ModelAndView mv = new ModelAndView("WEB-INF/searchResults.jsp");
+	public ModelAndView searchFilms(@RequestParam("keyword")String keyword) {
+		ModelAndView mv = new ModelAndView("WEB-INF/getFilmByID.jsp");
 		List<Film>films = filmDao.findByKeyword(keyword);
 		mv.addObject("films", films);
 		return mv;
