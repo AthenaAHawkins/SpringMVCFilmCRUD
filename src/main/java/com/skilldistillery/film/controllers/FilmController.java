@@ -1,5 +1,7 @@
 package com.skilldistillery.film.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +24,9 @@ public class FilmController {
 
 	@RequestMapping(path = "showFilm.do", params = "filmId")
 	public ModelAndView showFilm(int filmId) {
-<<<<<<< HEAD
-		ModelAndView mv = new ModelAndView("WEB-INF/showFilm.jsp");
-=======
+
 		ModelAndView mv = new ModelAndView("WEB-INF/getFilmByID.jsp");
->>>>>>> ce0309a5fdbda6f2228f1cbad1af0131fd936fa0
+
 		System.out.println("***** FilmId: " + filmId);
 
 		Film film = filmDao.findFilmById(filmId);
@@ -39,7 +39,7 @@ public class FilmController {
 
 	@RequestMapping(path = "createFilm.do", params = "newFilm")
 	public ModelAndView createFilm(Film newFilm) {
-		ModelAndView mv = new ModelAndView();
+		ModelAndView mv = new ModelAndView("WEB-INF/getCreateFilm.jsp");
 		System.out.println("*** New Film: " + newFilm);
 		Film createFilm = filmDao.createFilm(newFilm);
 		System.out.println("*** Film: " + createFilm);
@@ -63,6 +63,13 @@ public class FilmController {
 		return mv;
 			
 	}
+	@RequestMapping(path = "getCreateFilm.do")
+	public String getCreateFilmByID() {
+		
+		return "WEB-INF/getCreateFilm.jsp";
+	}
+			
+	
 	@RequestMapping(path = "getFilmByID.do") 
 	public String getFilmByID() {
 		
@@ -81,6 +88,13 @@ public class FilmController {
 		}
 		return mv;
 		
+	}
+	@RequestMapping(path = "searchFilms.do", params = "keyword")
+	public ModelAndView searchFilms(String keyword) {
+		ModelAndView mv = new ModelAndView("WEB-INF/searchResults.jsp");
+		List<Film>films = filmDao.findByKeyword(keyword);
+		mv.addObject("films", films);
+		return mv;
 	}
 	
 	
