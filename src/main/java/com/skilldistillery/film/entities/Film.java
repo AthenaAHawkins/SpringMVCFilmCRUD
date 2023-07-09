@@ -22,8 +22,13 @@ public class Film {
 
 	public Film() {
 		
-		
 	}
+	
+	public Film(String title, String description) {
+		this.title=title;
+		this.description = description;
+	}
+	
 	public Film(int id, String title, String desc, int releaseYear, int rentDur, double rate, int length,
 			double repCost, String rating, String features, String languageName) {
 		super();

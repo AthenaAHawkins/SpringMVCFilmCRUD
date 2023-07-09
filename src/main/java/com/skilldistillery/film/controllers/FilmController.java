@@ -40,15 +40,16 @@ public class FilmController {
 	}
 
 	@RequestMapping(path = "createFilm.do")
-	public ModelAndView createFilm(@RequestParam ("newFilm")Film newFilm) {
-		ModelAndView mv = new ModelAndView("WEB-INF/getCreateFilm.jsp");
-		System.out.println("*** New Film: " + newFilm);
-		Film createFilm = filmDao.createFilm(newFilm);
+	public ModelAndView createFilm(@RequestParam("title") String title,@RequestParam("description") String description) {
+		ModelAndView mv = new ModelAndView("WEB-INF/createFilm.jsp");
+		//System.out.println("*** New Film: " + newFilm);
+		Film createFilm = filmDao.createFilm(new Film(title,description));
 		System.out.println("*** Film: " + createFilm);
 		mv.addObject("film", createFilm);
-		
-		
+		mv.setViewName("WEB-INF/home.jsp");
 		return mv;
+
+		
 	}
 
 	@RequestMapping(path = "deleteFilm.do")
@@ -68,9 +69,10 @@ public class FilmController {
 	}
 
 	@RequestMapping(path = "getCreateFilm.do")
-	public String getCreateFilm() {
+	public String getCreateFilmByID() {
+		
+		return "WEB-INF/createFilm.jsp";
 
-		return "WEB-INF/getCreateFilm.jsp";
 	}
 
 	@RequestMapping(path = "getFilmByID.do")
@@ -79,8 +81,15 @@ public class FilmController {
 		return "WEB-INF/getFilmByID.jsp";
 	}
 
+	
+	@RequestMapping(path = "updateFilmInfo.do")
+	public String updateFilmInfo() {
+		return "WEB-INF/saveFilm.jsp";
+	}
+	
+
 	@RequestMapping(path = "saveFilm.do")
-	public ModelAndView updateFilm(Film savedFilm) {
+	public ModelAndView updateFilm(@RequestParam("filmInfo")Film savedFilm) {
 		ModelAndView mv = new ModelAndView();
 		boolean film = filmDao.saveFilm(savedFilm);
 		System.out.println("**** SaveFilm" + film);
