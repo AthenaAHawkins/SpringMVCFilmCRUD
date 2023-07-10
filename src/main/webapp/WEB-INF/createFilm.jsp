@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>create Film</title>
 </head>
-<body>
+<body style ="background-color:silver;">
 
 <h1>Create Film</h1>
 

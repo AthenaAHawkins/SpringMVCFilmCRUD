@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>Film Info</title>
 </head>
-<body>
+<body style ="background-color:silver; ">
 
 	<h3>Find film by ID</h3>
 
@@ -86,7 +86,6 @@
 
 </body>
 </html>
-
 
 
 
