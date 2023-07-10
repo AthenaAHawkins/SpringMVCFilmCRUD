@@ -17,6 +17,7 @@
 
 Title: <input type="text" name="title" value ="${film.title }">
 Description: <input type="text" name="description" value="${film.description }">
+Release Year: <input type="number" name="releaseYear" value="${film.releaseYear }">
 
 
 

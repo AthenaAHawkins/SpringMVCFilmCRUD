@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.skilldistillery.film.entities.Actor;
 import com.skilldistillery.film.entities.Film;
 
@@ -160,14 +159,15 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(URL, user, pass);
-			conn.setAutoCommit(false); // START TRANSACTION
+			conn.setAutoCommit(false);
 
-			String sql = "INSERT INTO film (title, description, language_id) " + " VALUES (?,?,?)";
+			String sql = "INSERT INTO film (title, description, release_year, language_id) " + " VALUES (?,?,?,?)";
 
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, newFilm.getTitle());
 			stmt.setString(2, newFilm.getDescription());
-			stmt.setInt(3, newFilm.getLanguageId());
+			stmt.setInt(3, newFilm.getReleaseYear());
+			stmt.setInt(4, 1);
 			int updateCount = stmt.executeUpdate();
 			conn.commit();
 
@@ -184,10 +184,11 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 
 		} catch (SQLException sql) {
 			sql.printStackTrace();
-			
-	}
+
+		}
 		return newFilm;
 	}
+
 	@Override
 	public boolean deleteFilm(int filmId) {
 		Connection conn = null;
@@ -217,18 +218,18 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(URL, user, pass);
-			conn.setAutoCommit(false); // START TRANSACTION
-			String sql = "UPDATE film SET title=?, description=?, release_year=?, language_id=?  WHERE id=?";
+			conn.setAutoCommit(false); 
+			String sql = "UPDATE film SET title=?, description=?, release_year=? WHERE id=?";
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, film.getTitle());
 			stmt.setString(2, film.getDescription());
 			stmt.setInt(3, film.getReleaseYear());
-			stmt.setInt(4, film.getLanguageId());
-			stmt.setInt(5, film.getId());
+			
+			stmt.setInt(4, film.getId());
 			int updateCount = stmt.executeUpdate();
 			if (updateCount == 1) {
-				
+
 				conn.commit();
 			}
 		} catch (SQLException sqle) {
